@@ -33,7 +33,7 @@ router.param("id", async (req, res, next, id) => {
 //Search events by Title
 router.get('/search', async (req, res)=>{
 const{query} = req.query;
-
+// apply regex
 try{
   const results = await Event.find({
     $or:[

@@ -1,18 +1,21 @@
-
+// import RSVP and event from mongoose models
 import Rsvp from '../models/rsvpModel.js';
 import Event from '../models/eventModel.js';
 
+//create new rsvp
+//route post/rsvp
 
 const createRsvp = async (req, res) => {
   try {
     const { event, name, email } = req.body;
 
-    // Check if the event exists
+    // Check if the referenced event exists
     const existingEvent = await Event.findById(event);
     if (!existingEvent) {
+       // If the event does not exist, return an error
       return res.status(400).json({ message: 'Event not found' });
     }
-
+// create rsvp document
     const rsvp = await Rsvp.create({
       event,
       name,
@@ -28,7 +31,7 @@ const createRsvp = async (req, res) => {
 
 //   Get all RSVPs
 // GET /rsvp
-// Public
+
 const getRsvps = async (req, res) => {
   try {
     const rsvps = await Rsvp.find().populate('event', 'title'); // Populate the event details
@@ -41,7 +44,7 @@ const getRsvps = async (req, res) => {
 
 //   Get a single RSVP
 //   GET /rsvp/:id
-//  Public
+
 const getRsvp = async (req, res) => {
     try {
       const rsvp = await Rsvp.findById(req.params.id).populate('event', 'title'); // Populate the event details
@@ -55,14 +58,15 @@ const getRsvp = async (req, res) => {
     }
   };
 
-// @desc    Update an RSVP
-// @route   PATCH /rsvp/:id
-// @access  Public
+//  Update an RSVP
+// PATCH /rsvp/:id
+
 const updateRsvp = async (req, res) => {
   try {
+    // Find RSVP by ID and update with new data
     const rsvp = await Rsvp.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
+      new: true, //// Return the updated document
+      runValidators: true  // Run schema validators on update
     });
 
     if (!rsvp) {
@@ -76,9 +80,9 @@ const updateRsvp = async (req, res) => {
   }
 };
 
-// @desc    Delete an RSVP
-// @route   DELETE /rsvp/:id
-// @access  Public
+//  Delete an RSVP
+// DELETE /rsvp/:id
+
 const deleteRsvp = async (req, res) => {
   try {
     const rsvp = await Rsvp.findByIdAndDelete(req.params.id);

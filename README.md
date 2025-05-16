@@ -1,5 +1,5 @@
 
-# SBA319 - Event Management Application
+# Capstone - Event Management Application
 
 ## Description
 

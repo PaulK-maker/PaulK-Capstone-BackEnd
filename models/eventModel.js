@@ -1,8 +1,9 @@
-//event schema
+// Import mongoose for schema and model creation
 
 import mongoose from 'mongoose';
-
+// Define the event schema
 const eventSchema = new mongoose.Schema({
+   // Title of the event (required)
   title: {
     type: String,
     required: [true, 'Please add a title']
@@ -10,13 +11,13 @@ const eventSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, 'Please add a description'],
-
+// Descriptin 10 charactes
     minlength: [10, 'Description must be at least 10 characters'] //validate length
   },
+  // Date of the event (required, must be a future date)
   date: {
     type: Date,
     required: [true, 'Please add a date'],
-
     validate: {
       validator: function(value) {
         return value > new Date(); // validate check if the date is in the future
@@ -24,15 +25,18 @@ const eventSchema = new mongoose.Schema({
       message: 'Date must be in the future'
     }
   },
+  // Location of the event (required)
   location: {
     type: String,
     required: [true, 'Please add a location']
   },
+   // Optional reference to the company hosting or related to the event
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Company',
     required: false 
   },
+  //  reference to the user who created/organized the event
   organizer: {
     //removed organizer here -false
     type: mongoose.Schema.Types.ObjectId,
